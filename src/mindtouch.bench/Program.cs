@@ -21,10 +21,12 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.IO;
 using System.Reflection;
 using System.Diagnostics;
+using MindTouch.Deki.Util.Csv;
 
 namespace MindTouch.Tools {
     class DreamBench {
@@ -38,6 +40,7 @@ namespace MindTouch.Tools {
         static string HTMLOUTPUT_FILENAME = "results.html";
         static bool OUTPUT_HTML = false;
         static bool SAVE_GNOPLOT_DATA = false;
+        static string COOKIE = "";
         static int URIS_TESTED = 0;
         static string BASE_URI = string.Empty;
         static string[] URI_LIST = new string[] { };
@@ -97,11 +100,12 @@ namespace MindTouch.Tools {
             if( saveGnuPlotData){
                 cmdLineSB.AppendFormat(" -g \"{0}\"",  BuildPathWithUri(uri,GNUPLOT_FILENAME));
             }
-
+            cmdLineSB.AppendFormat(@" -C {0}", COOKIE);
             cmdLineSB.Append(" " + uri);
 
             MemoryStream stdoutStream;
             string stderror;
+            Console.WriteLine(cmdLineSB.ToString());
             int statuscode = ExecuteProcess(PATH_TO_AB, cmdLineSB.ToString(), null, 0, out stdoutStream, out stderror);
 
             if (statuscode == 0 && stdoutStream != null && stdoutStream.Length > 0) {
@@ -125,6 +129,9 @@ namespace MindTouch.Tools {
                         break;
                     case "--urifile":
                         LoadUriFile(value);
+                        break;
+                    case "--csvfile":
+                        LoadCsvFile(value);
                         break;
                     case "--uri":
                         LoadUri(value);
@@ -154,6 +161,9 @@ namespace MindTouch.Tools {
                         SAVE_GNOPLOT_DATA = true;
                         i--;
                         break;
+                    case "--cookie":
+                        COOKIE = value;
+                        break;
                     default:
                         PrintUsage();
                         return;
@@ -173,6 +183,9 @@ namespace MindTouch.Tools {
             Console.WriteLine("    --abpath <path>        Path to apache bench 'ab' binary (default: /usr/sbin/ab for unix)");
             Console.WriteLine("    --htmloutput           Save result output as html instead of text");
             Console.WriteLine("    --savegnuplot          Save data gnuplot");
+            Console.WriteLine("    --cookie <cookies>     Set the cookies you want to send");
+            Console.WriteLine("    --csvfile <path>       Path to a csv file that contains the list of uris");
+            // TODO(cesarn): set the primary key for the csv file
             Console.WriteLine();
             Console.WriteLine(" Note: This requires apache bench which comes with debian");
             Console.WriteLine("       package 'apache2-utils' or with windows Apache installer");
@@ -204,6 +217,14 @@ namespace MindTouch.Tools {
 
 
             URI_LIST = uriOut.ToArray();
+        }
+
+        static void LoadCsvFile(string path) {
+            if (!File.Exists(path)) {
+                Die(false, string.Format("--urifile '{0}' does not exist!", path));
+            }
+            var csv = CsvTable.NewFromPath(path, Encoding.UTF8, "pageid");
+            URI_LIST = csv.Select(row => row["uri"]).ToArray();
         }
 
         static void LoadUri(string value) {
