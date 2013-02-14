@@ -35,6 +35,7 @@ namespace MindTouch.Tools {
         static string PATH_TO_OUTPUT = string.Empty;
         static int NUM_REQUESTS = 50;
         static int NUM_THREADS = 1;
+        static string PRIMARY_KEY_COLUMN = "";
         static string GNUPLOT_FILENAME = "gnuplotdata.txt";
         static string STDOUTPUT_FILENAME = "results.txt";
         static string HTMLOUTPUT_FILENAME = "results.html";
@@ -133,6 +134,10 @@ namespace MindTouch.Tools {
                     case "--csvfile":
                         LoadCsvFile(value);
                         break;
+                    case "--csvprimarykeycolumn":
+                        PRIMARY_KEY_COLUMN = value;
+                    Console.WriteLine("value = {0}", value);
+                        break;
                     case "--uri":
                         LoadUri(value);
                         break;
@@ -185,7 +190,7 @@ namespace MindTouch.Tools {
             Console.WriteLine("    --savegnuplot          Save data gnuplot");
             Console.WriteLine("    --cookie <cookies>     Set the cookies you want to send");
             Console.WriteLine("    --csvfile <path>       Path to a csv file that contains the list of uris");
-            // TODO(cesarn): set the primary key for the csv file
+            Console.WriteLine("    --csvprimarykeycolumn <keyname> Name of the primary column");
             Console.WriteLine();
             Console.WriteLine(" Note: This requires apache bench which comes with debian");
             Console.WriteLine("       package 'apache2-utils' or with windows Apache installer");
@@ -223,7 +228,7 @@ namespace MindTouch.Tools {
             if (!File.Exists(path)) {
                 Die(false, string.Format("--urifile '{0}' does not exist!", path));
             }
-            var csv = CsvTable.NewFromPath(path, Encoding.UTF8, "pageid");
+            var csv = CsvTable.NewFromPath(path, Encoding.UTF8, PRIMARY_KEY_COLUMN);
             URI_LIST = csv.Select(row => row["uri"]).ToArray();
         }
 
