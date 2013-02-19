@@ -43,7 +43,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <NoWarn>1911,1591</NoWarn>
+    <NoWarn>1591</NoWarn>
     <DocumentationFile>..\bin\mindtouch.dream.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -302,6 +302,8 @@
     <Compile Include="Xml\XDocRecursiveEnumerator.cs" />
     <Compile Include="Xml\XSoap.cs" />
     <Compile Include="Xml\XTypes.cs" />
+    <Compile Include="Collections\EnumerableUtil.cs" />
+    <Compile Include="Collections\DictionaryUtil.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
