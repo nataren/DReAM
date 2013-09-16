@@ -82,7 +82,7 @@ namespace MindTouch.Tasking {
         /// <summary>
         /// The default result timeout is 10 minutes.
         /// </summary>
-        public static readonly TimeSpan DEFAULT_TIMEOUT = TimeSpan.FromSeconds(10 * 60);
+        public static readonly TimeSpan DEFAULT_TIMEOUT = TimeSpan.FromMinutes(10);
 
         //--- Types ---
 

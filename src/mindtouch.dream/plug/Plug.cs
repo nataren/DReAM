@@ -60,11 +60,11 @@ namespace MindTouch.Dream {
         /// Base score normal priorty <see cref="IPlugEndpoint"/> implementations should use to signal a successful match.
         /// </summary>
         public const int BASE_ENDPOINT_SCORE = int.MaxValue / 2;
-        
+
         /// <summary>
         /// Default timeout of 60 seconds for <see cref="Plug"/> invocations.
         /// </summary>
-        public static readonly TimeSpan DEFAULT_TIMEOUT = TimeSpan.FromSeconds(60);
+        public static readonly TimeSpan DEFAULT_TIMEOUT = TimeSpan.FromMinutes(10);
 
         //--- Class Fields ---
 
