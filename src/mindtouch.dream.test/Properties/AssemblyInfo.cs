@@ -52,9 +52,9 @@ using System.Runtime.InteropServices;
 //
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
-[assembly: AssemblyVersion("2.5.0.0")]
-[assembly: AssemblyFileVersion("2.5.0.0")]
-[assembly: GitBranch("2.5")]
+[assembly: AssemblyVersion("2.5.1.0")]
+[assembly: AssemblyFileVersion("2.5.1.0")]
+[assembly: GitBranch("master")]
 [assembly: GitRevision("HEAD")]
 [assembly: GitUri("https://github.com/MindTouch/DReAM")]
 
